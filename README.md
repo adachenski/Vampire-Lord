@@ -1,13 +1,18 @@
 # Vampire-Lord
-Team-Project-Snake
+<h1 style="color:purple">The Snake</h1>
+<hr>
+<p><h2 style="color:purple">Developers <sup>TM</sup></h2> </p>
 <p>
-<br> developers: <br>
-<br> Цветан Разсолков <br>
-<br>Геаорги Малковски <br>
-<br>Еса Вехманен <br>
-<br>Атанас Даченски <br>
-<br>Константина Кръстева <br>
-<br>Ивайло Парванов <br>
-<br>Янко Стоянов <br> 
-<br>аа бб <br>
+<hr>
+	<ul style="list-style-type:disc">
+	<li>Цветан Разсолков</li>
+	<li>Георги Малковски </li>
+	<li>Еса Вехманен </li>
+	<li>Атанас Даченски </li>
+	<li>Константина Кръстева</li>
+	<li>Ивайло Парванов </li>
+	<li>Янко Стоянов </li>
+	<li>аа бб </li>
+	</ul>  
+	<hr>
 </p>
