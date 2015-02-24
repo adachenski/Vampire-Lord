@@ -41,6 +41,7 @@ namespace SnakeCSharp
 
         static void Main()
         {
+            LoadingGame();
             // Някакво старт меню може да се направи преди да се нарисува полето, ако на някой му
             // се занимава - пак си е допълнителен метод :)
             InitiateGameField();
@@ -279,6 +280,34 @@ namespace SnakeCSharp
             {
                 element.Print(snakeSymbol);
             }
+        }
+
+        static void LoadingGame()
+        {
+
+            int start = 15, tempStart = start;
+            int end = Console.WindowWidth - (start * 2) + 1;
+
+            Console.SetCursorPosition(start * 2, 19);
+            Console.WriteLine("LOADING :    %");
+            for (int i = 0; i < end; i++)
+            {
+                Console.SetCursorPosition(start * 2 + 10, 19);
+                Console.Write(i + i);
+                Console.SetCursorPosition(tempStart, 20);
+                Console.Write('.');
+                Console.SetCursorPosition(tempStart, 21);
+                Console.Write("|");
+                Console.SetCursorPosition(tempStart, 22);
+                Console.Write('\'');
+                Thread.Sleep(100);
+                if (i == end - 12)
+                {
+                    Thread.Sleep(1000);
+                }
+                ++tempStart;
+            }
+            Console.Clear();
         }
     }
 }
