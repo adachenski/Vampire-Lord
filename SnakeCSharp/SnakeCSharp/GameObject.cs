@@ -31,5 +31,11 @@ namespace SnakeCSharp
             Console.SetCursorPosition(this.Horizontal, this.Vertical);
             Console.Write(symbol);
         }
+
+        public void Print(string str)
+        {
+            Console.SetCursorPosition(this.Horizontal, this.Vertical);
+            Console.Write(str);
+        }
     }
 }

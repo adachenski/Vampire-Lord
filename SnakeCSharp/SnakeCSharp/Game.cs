@@ -37,16 +37,15 @@ namespace SnakeCSharp
 
         static Random randomNumberGenerator = new Random();
 
-        static int level = 1;
-        static int fullScore = 0;
-        static int levelScore = 0;
+        static int level = 1;            
 
         static void Main()
         {
             // Някакво старт меню може да се направи преди да се нарисува полето, ако на някой му
             // се занимава - пак си е допълнителен метод :)
             InitiateGameField();
-            
+            int fullScore = 0;    
+            int levelScore = 0;
             int command = (int)Commands.right;
             bool[,] obstacleCoordinates = new bool[Console.WindowHeight, Console.WindowWidth];
             GenerateObstacles(obstacleCoordinates);
@@ -99,7 +98,7 @@ namespace SnakeCSharp
                     PrintObstacles(obstacles);
                     food = GenerateFood(obstacles); 
                     food.Print(foodSymbol);
-
+                    Thread.Sleep(1200);
                 }
             }
         }               
@@ -108,7 +107,8 @@ namespace SnakeCSharp
         {
             // TODO: 
             return false;
-        } // TODO
+        } // TODO: 
+        //Detect collision with obstacles and its own body;
 
         static void FeedSnake(int command)
         {
@@ -159,7 +159,7 @@ namespace SnakeCSharp
         {
             foreach (var obstacle in obstacles)
             {
-                obstacle.Print(obstacleSymbol);
+                obstacle.Print(new string(obstacleSymbol, level));
             }
         }
 
