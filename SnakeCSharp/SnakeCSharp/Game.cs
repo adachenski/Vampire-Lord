@@ -43,7 +43,8 @@ namespace SnakeCSharp
         {
             LoadingGame();
             // Някакво старт меню може да се направи преди да се нарисува полето, ако на някой му
-            // се занимава - пак си е допълнителен метод :)
+            // се занимава - пак си е допълнителен метод :) Примерно - Press 1 to start game. 
+            // Press 2 to see high scores. Press 3 to exit. Нещо такова.
             InitiateGameField();
             int fullScore = 0;    
             int levelScore = 0;
