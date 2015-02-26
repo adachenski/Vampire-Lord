@@ -9,7 +9,7 @@ using System.IO;
 // TODO: Някъде да се сложат две try{}catch{} конструкции. Най-лесно май ще е в метода
 // (несъществуващ все още) за писане в текстов файл на резултат при GameOver(ред 70 и нещо);
 // Със сигурност може да се поправи, бая мазало стана кода, дано е що-годе разбираем.
- 
+
 namespace SnakeCSharp
 {
     class Game
@@ -37,7 +37,9 @@ namespace SnakeCSharp
 
         static Random randomNumberGenerator = new Random();
 
-        static int level = 1;            
+        static int level = 1;
+
+        static DateTime showFood = DateTime.Now;
 
         static void Main()
         {
@@ -46,7 +48,7 @@ namespace SnakeCSharp
             // се занимава - пак си е допълнителен метод :) Примерно - Press 1 to start game. 
             // Press 2 to see high scores. Press 3 to exit. Нещо такова.
             InitiateGameField();
-            int fullScore = 0;    
+            int fullScore = 0;
             int levelScore = 0;
             int command = (int)Commands.right;
             bool[,] obstacleCoordinates = new bool[Console.WindowHeight, Console.WindowWidth];
@@ -55,22 +57,25 @@ namespace SnakeCSharp
             PrintObstacles(obstacles);
             GameObject food = GenerateFood(obstacles);
             food.Print(foodSymbol);
+            showFood = DateTime.Now;
+
             while (true)
             {
-                
                 while (Console.KeyAvailable)
                 {
                     command = GetDirectionFromKeyboard(command);
                 }
-                GameObject currentSnakeHead = snakeBody.Last();               
+                GameObject currentSnakeHead = snakeBody.Last();
                 MoveSnake(command);
                 if (currentSnakeHead.Equals(food))
                 {
                     FeedSnake(command);
                     food = GenerateFood(obstacles);
                     food.Print(foodSymbol);
+                    showFood = DateTime.Now;
                     levelScore += level * 50;
                 }
+
                 bool gameOver = DetectCollisions(obstacles); // TODO
                 if (gameOver)
                 {
@@ -82,6 +87,14 @@ namespace SnakeCSharp
                     return;
                 }
                 Thread.Sleep(100);
+                bool TooOldFood = DeleteFoodAfterTime(showFood, food, obstacles);
+                if (TooOldFood)
+                {
+                    food = GenerateFood(obstacles);
+                    food.Print(foodSymbol);
+                    TooOldFood = false;
+                    showFood = DateTime.Now;
+                }
                 if (levelScore == level * 100)// Тук може да си поиграе човек да измисли кога да
                 //почва следващото ниво(сега е на 2 изядени "храни", колкото за тестване).
                 // Също - да се прави някаква промяна на скоростта в зависимост от нивото. 
@@ -98,12 +111,32 @@ namespace SnakeCSharp
                     GenerateObstacles(obstacleCoordinates);
                     obstacles = GetObstacles(obstacleCoordinates);
                     PrintObstacles(obstacles);
-                    food = GenerateFood(obstacles); 
+                    food = GenerateFood(obstacles);
                     food.Print(foodSymbol);
                     Thread.Sleep(1200);
+                    showFood = DateTime.Now;
                 }
             }
-        }               
+        }
+
+        private static bool DeleteFoodAfterTime(DateTime showFood, GameObject food, List<GameObject> obstacles)
+        {
+            DateTime hideFood = DateTime.Now;
+            int h = food.Horizontal;
+            int w = food.Vertical;
+            TimeSpan timer = new TimeSpan(0, 0, 8);
+
+            if (hideFood - showFood >= timer)
+            {
+                obstacles.Remove(food);
+                food.Print(' ');
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         static bool DetectCollisions(List<GameObject> obstacles)
         {
