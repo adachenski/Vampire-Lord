@@ -51,7 +51,8 @@ namespace SnakeCSharp
 
         static void Main()
         {
-            int timeSleep = 100;
+            
+
             MainMenue.LoadingGame();
             MainMenue.SplashScreen();
             Console.Clear();
@@ -60,7 +61,7 @@ namespace SnakeCSharp
             // Press 2 to see high scores. Press 3 to exit. Нещо такова.
             InitiateGameField();
 
-
+            int timeSleep = 100;
             int command = (int)Commands.right;
             bool[,] obstacleCoordinates = new bool[Console.WindowHeight, Console.WindowWidth];
             GenerateObstacles(obstacleCoordinates);
@@ -110,6 +111,7 @@ namespace SnakeCSharp
                 {
 
                     Console.SetCursorPosition(0, 0);
+                    Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("Game over".PadRight(Console.WindowWidth));
                     Console.SetCursorPosition(0, 1);
                     Console.WriteLine("Scores: {0}".PadRight(Console.WindowWidth + 2), fullScore + levelScore);
@@ -149,7 +151,7 @@ namespace SnakeCSharp
                     Console.WriteLine(new string('-', Console.WindowWidth));
                     Console.SetCursorPosition(0, 0);
                     Console.WriteLine("Scores = {0}", fullScore + levelScore);
-                    timeSleep -= level * 10;
+                    timeSleep -= 5;
                     int snakeLength = snakeBody.Count;
                     snakeBody.Clear();
                     InitializePrintNewSnake(snakeLength);

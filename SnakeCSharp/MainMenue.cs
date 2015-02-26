@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading;
-
+﻿
 namespace SnakeCSharp
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Threading;
+
     public class MainMenue
     {
 
@@ -84,7 +85,7 @@ namespace SnakeCSharp
             Console.Write("\n\n     ");
             Console.ForegroundColor = ConsoleColor.Red;
             Console.BackgroundColor = ConsoleColor.Black;
-            Console.Write("Venpire Lord Team \n");
+            Console.Write("Vampire Lord Team \n");
             Console.Write("\n    ");
             Console.ForegroundColor = ConsoleColor.Black;
             Console.BackgroundColor = ConsoleColor.Green;
@@ -128,8 +129,9 @@ namespace SnakeCSharp
                             switch (selectedOptionIndex)
                             {
                                 case 0:
-                                    Game.InitiateGameField();
+                                    
                                     reloadTheWholeMenu = true;
+                                    Console.Clear();
                                     return;
                                 case 1:
                                     // TODO: Nneed to implement TopScoreSifo:
@@ -198,7 +200,6 @@ namespace SnakeCSharp
             Console.WriteLine("                       ");
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ReadKey();
-            Game.InitiateGameField();
             //SplashScreen();
         }
 
