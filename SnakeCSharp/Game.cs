@@ -47,9 +47,11 @@ namespace SnakeCSharp
         static int fullScore = 0;
         static int levelScore = 0;
 
+        static DateTime showFood = DateTime.Now;
+
         static void Main()
         {
-            int timeSleep = 200;
+            int timeSleep = 100;
             LoadingGame();
             // Някакво старт меню може да се направи преди да се нарисува полето, ако на някой му
             // се занимава - пак си е допълнителен метод :) Примерно - Press 1 to start game. 
@@ -63,8 +65,9 @@ namespace SnakeCSharp
             List<GameObject> obstacles = GetObstacles(obstacleCoordinates);
             PrintObstacles(obstacles);
             GameObject food = GenerateFood(obstacles);
-            GameObject poison = GeneratePoisonFood(obstacles, food);
             food.Print(foodSymbol, foodColor);
+            showFood = DateTime.Now;
+            GameObject poison = GeneratePoisonFood(obstacles, food);
             poison.Print(poisonFood, poisonColor);
             while (true)
             {
@@ -97,9 +100,10 @@ namespace SnakeCSharp
                     FeedSnake(command);
                     food = GenerateFood(obstacles);
                     food.Print(foodSymbol, foodColor);
+                    showFood = DateTime.Now;
                 }
 
-                bool gameOver = MoveSnake(command, obstacles) || fullScore < 0;
+                bool gameOver = MoveSnake(command, obstacles) || fullScore + levelScore < 0;
                 if (gameOver)
                 {
 
@@ -120,6 +124,16 @@ namespace SnakeCSharp
                     return;
                 }
                 Thread.Sleep(timeSleep);
+
+                bool TooOldFood = DeleteFoodAfterTime(showFood, food, obstacles);
+                if (TooOldFood)
+                {
+                    food = GenerateFood(obstacles);
+                    food.Print(foodSymbol, foodColor);
+                    TooOldFood = false;
+                    showFood = DateTime.Now;
+                }
+
                 if (levelScore == 100)// Тук може да си поиграе човек да измисли кога да
                 //почва следващото ниво(сега е на 2 изядени "храни", колкото за тестване).
                 // Също - да се прави някаква промяна на скоростта в зависимост от нивото. 
@@ -147,10 +161,30 @@ namespace SnakeCSharp
                     poison = GenerateFood(obstacles);
                     poison.Print(poisonFood, poisonColor);
                     Thread.Sleep(1200);
-
+                    showFood = DateTime.Now;
                 }
             }
         }
+
+        private static bool DeleteFoodAfterTime(DateTime showFood, GameObject food, List<GameObject> obstacles)
+        {
+            DateTime hideFood = DateTime.Now;
+            int h = food.Horizontal;
+            int w = food.Vertical;
+            TimeSpan timer = new TimeSpan(0, 0, 8);
+
+            if (hideFood - showFood >= timer)
+            {
+                obstacles.Remove(food);
+                food.Print(' ', foodColor);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         static GameObject GeneratePoisonFood(List<GameObject> obstacles, GameObject food)
         {
             GameObject poison;

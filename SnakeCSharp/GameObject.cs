@@ -32,11 +32,5 @@ namespace SnakeCSharp
             Console.ForegroundColor = color;
             Console.Write(symbol);
         }
-
-        public void Print(string str)
-        {
-            Console.SetCursorPosition(this.Horizontal, this.Vertical);
-            Console.Write(str);
-        }
     }
 }
