@@ -26,9 +26,10 @@ namespace SnakeCSharp
                 this.Vertical.Equals(other.Vertical);
         }
 
-        public void Print(char symbol)
+        public void Print(char symbol,ConsoleColor color)
         {
             Console.SetCursorPosition(this.Horizontal, this.Vertical);
+            Console.ForegroundColor = color;
             Console.Write(symbol);
         }
 
