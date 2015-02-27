@@ -15,9 +15,9 @@ namespace SnakeCSharp
     class Game
     {
         const char snakeSymbol = '*';
-        const char obstacleSymbol = 'O';
-        const char foodSymbol = 'F';
-        const char poisonFood = 'P';
+        const char obstacleSymbol = '\u2588';
+        const char foodSymbol = '\u2665';
+        const char poisonFood = '\u2660';
         const ConsoleColor snakeColor = ConsoleColor.White;
         const ConsoleColor obstacleColor = ConsoleColor.Yellow;
         const ConsoleColor foodColor = ConsoleColor.Green;
