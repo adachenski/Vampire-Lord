@@ -369,6 +369,8 @@ namespace SnakeCSharp
                 GameObject currentSnakeHead = snakeBody.Last();
                 if (currentSnakeHead.Equals(poison))
                 {
+                    SoundPlayer poisonSound = new System.Media.SoundPlayer(@"..\\..\\poisonSound.wav");
+                    poisonSound.Play();
                     levelScore -= 50;
                     Console.SetCursorPosition(0, 0);
                     Console.WriteLine(new string(' ', Console.WindowWidth));
