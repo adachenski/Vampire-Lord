@@ -97,7 +97,7 @@ namespace SnakeCSharp
             StartMenueOptions();
         }
 
-        static void StartMenueOptions()
+        public static void StartMenueOptions()
         {
             bool quitRequested = false;
             while (!quitRequested)
@@ -129,9 +129,10 @@ namespace SnakeCSharp
                             switch (selectedOptionIndex)
                             {
                                 case 0:
-                                    
+
                                     reloadTheWholeMenu = true;
                                     Console.Clear();
+                                    Game.GamePlay();
                                     return;
                                 case 1:
                                     // TODO: Nneed to implement TopScoreSifo:
@@ -202,7 +203,7 @@ namespace SnakeCSharp
             Console.WriteLine("                       ");
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ReadKey();
-           // SplashScreen();
+            // SplashScreen();
         }
     }
 }

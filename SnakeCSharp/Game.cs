@@ -56,127 +56,11 @@ namespace SnakeCSharp
             MainMenue.LoadingGame();
             MainMenue.SplashScreen();
             Console.Clear();
+            Exit();
             if (exit == true)
             {
                 Console.BackgroundColor = ConsoleColor.Black;
                 return;
-            }
-
-            InitiateGameField();
-
-            int timeSleep = 100;
-            int command = (int)Commands.right;
-
-            bool[,] obstacleCoordinates = new bool[Console.WindowHeight, Console.WindowWidth];
-            GenerateObstacles(obstacleCoordinates);
-            List<GameObject> obstacles = GetObstacles(obstacleCoordinates);
-            PrintObstacles(obstacles);
-
-            GameObject food = GenerateFood(obstacles);
-            food.Print(foodSymbol, foodColor);
-            showFood = DateTime.Now;
-
-            GameObject poison = GeneratePoisonFood(obstacles, food);
-            poison.Print(poisonFood, poisonColor);
-
-            while (true)
-            {
-
-                if (Console.KeyAvailable)
-                {
-                    command = GetDirectionFromKeyboard(command);
-                }
-                GameObject currentSnakeHead = snakeBody.Last();
-                if (currentSnakeHead.Equals(poison))
-                {
-                    levelScore -= 50;
-                    Console.SetCursorPosition(0, 0);
-                    Console.WriteLine(new string(' ', Console.WindowWidth));
-                    Console.SetCursorPosition(0, 0);
-                    Console.Write("Scores = {0}", fullScore + levelScore);
-                    Console.SetCursorPosition(Console.WindowWidth - 11, 0);
-                    Console.WriteLine("Level = {0}", level);
-                    FeedSnake(command);
-                    poison = GenerateFood(obstacles);
-                    poison.Print(poisonFood, poisonColor);
-
-                }
-                if (currentSnakeHead.Equals(food))
-                {
-                    SoundPlayer eatingSound = new System.Media.SoundPlayer(@"..\\..\\bitingSound.wav");
-                    eatingSound.Play();
-                    levelScore += 50;
-                    Console.SetCursorPosition(0, 0);
-                    Console.WriteLine(new string(' ', Console.WindowWidth));
-                    Console.SetCursorPosition(0, 0);
-                    Console.Write("Scores = {0}", fullScore + levelScore);
-                    Console.SetCursorPosition(Console.WindowWidth - 11, 0);
-                    Console.WriteLine("Level = {0}", level);
-                    FeedSnake(command);
-                    food = GenerateFood(obstacles);
-                    food.Print(foodSymbol, foodColor);
-                    showFood = DateTime.Now;
-                }
-
-                bool gameOver = MoveSnake(command, obstacles) || fullScore + levelScore < 0;
-                if (gameOver)
-                {
-                    SoundPlayer gameOverSound = new System.Media.SoundPlayer(@"..\\..\\gameOverSound.wav");
-                    gameOverSound.Play();
-                    Console.SetCursorPosition(0, 0);
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.WriteLine("Game over".PadRight(Console.WindowWidth));
-                    Console.SetCursorPosition(0, 1);
-                    Console.WriteLine("Scores: {0}".PadRight(Console.WindowWidth + 2), fullScore + levelScore);
-                    Console.SetCursorPosition(0, 2);
-                    Console.Write("Enter username:");
-                    string user = Console.ReadLine();
-                    Console.WriteLine();
-
-                    // Writing of result(asking user for name) in text file result.txt.
-                    
-                    return;
-                }
-                Thread.Sleep(timeSleep);
-
-                bool TooOldFood = DeleteFoodAfterTime(showFood, food, obstacles);
-                if (TooOldFood)
-                {
-                    food = GenerateFood(obstacles);
-                    food.Print(foodSymbol, foodColor);
-                    TooOldFood = false;
-                    showFood = DateTime.Now;
-                }
-
-                if (levelScore == 100)
-                {
-                    level++;
-                    fullScore += levelScore;
-                    levelScore = 0;
-                    Console.Clear();
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.SetCursorPosition(0, 1);
-                    Console.WriteLine(new string('-', Console.WindowWidth));
-                    Console.SetCursorPosition(0, 0);
-                    Console.Write("Scores = {0}", fullScore + levelScore);
-                    Console.SetCursorPosition(Console.WindowWidth - 11, 0);
-                    Console.WriteLine("Level = {0}", level);
-                    timeSleep -= 5;
-                    int snakeLength = snakeBody.Count;
-                    snakeBody.Clear();
-                    InitializePrintNewSnake(snakeLength);
-                    command = 0;
-                    obstacleCoordinates = new bool[Console.WindowHeight, Console.WindowWidth];
-                    GenerateObstacles(obstacleCoordinates);
-                    obstacles = GetObstacles(obstacleCoordinates);
-                    PrintObstacles(obstacles);
-                    food = GenerateFood(obstacles);
-                    food.Print(foodSymbol, foodColor);
-                    poison = GenerateFood(obstacles);
-                    poison.Print(poisonFood, poisonColor);
-                    Thread.Sleep(1200);
-                    showFood = DateTime.Now;
-                }
             }
         }
         public static void Exit()
@@ -304,7 +188,7 @@ namespace SnakeCSharp
             {
                 int row = randomNumberGenerator.Next(2, Console.WindowHeight);
                 // Check starting row of snake, so there is no way obstacle lands on the snake body upon starting the game;
-                if (row == Console.WindowHeight/2)
+                if (row == Console.WindowHeight / 2)
                 {
                     row++;
                 }
@@ -405,7 +289,7 @@ namespace SnakeCSharp
 
             for (int i = 0; i < 6; i++)
             {
-                snakeBody.Enqueue(new GameObject(i, Console.WindowHeight/2));
+                snakeBody.Enqueue(new GameObject(i, Console.WindowHeight / 2));
             }
             foreach (var element in snakeBody)
             {
@@ -422,6 +306,162 @@ namespace SnakeCSharp
             foreach (var element in snakeBody)
             {
                 element.Print(snakeSymbol, snakeColor);
+            }
+        }
+
+        static string[] ReadFromFile()
+        {
+            string[] highScores = {
+                                      "00012350 John Doe 27.01.2015",
+                                      "00002250 John Doe 27.01.2015",
+                                      "00000550 John Doe 27.01.2015",
+                                      "00000350 John Doe 27.01.2015",
+                                      "00000300 John Doe 27.01.2015",
+                                  };
+            return highScores;
+        }
+
+        static void WriteToFile(int highScore, string userName)
+        {
+            DateTime now = DateTime.Now;
+            string[] highScores = ReadFromFile();
+            string template = "{0:00000000} {1,-8} {2:dd.MM.yyyy}";
+            string newResult = String.Format(template, highScore, userName, now.Date);
+            Console.WriteLine(newResult);
+            if (String.Compare(newResult, highScores[4]) > 0)
+            {
+                highScores[4] = newResult;
+            }
+            using (StreamWriter writer = new StreamWriter("../../highscores.txt"))
+            {
+                foreach (string score in highScores)
+                {
+                    writer.WriteLine(score);
+
+                }
+            }
+        }
+
+
+        public static void GamePlay()
+        {
+            InitiateGameField();
+            fullScore = 0;
+            levelScore = 0;
+            level = 1;
+            int timeSleep = 100;
+            int command = (int)Commands.right;
+            bool[,] obstacleCoordinates = new bool[Console.WindowHeight, Console.WindowWidth];
+            GenerateObstacles(obstacleCoordinates);
+            List<GameObject> obstacles = GetObstacles(obstacleCoordinates);
+            PrintObstacles(obstacles);
+            GameObject food = GenerateFood(obstacles);
+            food.Print(foodSymbol, foodColor);
+            showFood = DateTime.Now;
+            GameObject poison = GeneratePoisonFood(obstacles, food);
+            poison.Print(poisonFood, poisonColor);
+            while (true)
+            {
+
+                if (Console.KeyAvailable)
+                {
+                    command = GetDirectionFromKeyboard(command);
+                }
+                GameObject currentSnakeHead = snakeBody.Last();
+                if (currentSnakeHead.Equals(poison))
+                {
+                    levelScore -= 50;
+                    Console.SetCursorPosition(0, 0);
+                    Console.WriteLine(new string(' ', Console.WindowWidth));
+                    Console.SetCursorPosition(0, 0);
+                    Console.WriteLine("Scores = {0}", fullScore + levelScore);
+                    Console.SetCursorPosition(Console.WindowWidth - 11, 0);
+                    Console.WriteLine("Level = {0}", level);
+                    FeedSnake(command);
+                    poison = GenerateFood(obstacles);
+                    poison.Print(poisonFood, poisonColor);
+
+                }
+                if (currentSnakeHead.Equals(food))
+                {
+                    SoundPlayer eatingSound = new System.Media.SoundPlayer(@"..\\..\\bitingSound.wav");
+                    eatingSound.Play();
+                    levelScore += 50;
+                    Console.SetCursorPosition(0, 0);
+                    Console.WriteLine(new string(' ', Console.WindowWidth));
+                    Console.SetCursorPosition(0, 0);
+                    Console.WriteLine("Scores = {0}", fullScore + levelScore);
+                    Console.SetCursorPosition(Console.WindowWidth - 11, 0);
+                    Console.WriteLine("Level = {0}", level);
+                    FeedSnake(command);
+                    food = GenerateFood(obstacles);
+                    food.Print(foodSymbol, foodColor);
+                    showFood = DateTime.Now;
+                }
+
+
+
+                bool gameOver = MoveSnake(command, obstacles) || fullScore + levelScore < 0;
+                if (gameOver)
+                {
+                    SoundPlayer gameOverSound = new System.Media.SoundPlayer(@"..\\..\\gameOverSound.wav");
+                    gameOverSound.Play();
+                    Console.SetCursorPosition(0, 0);
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine("Game over".PadRight(Console.WindowWidth));
+                    Console.SetCursorPosition(0, 1);
+                    Console.WriteLine("Scores: {0}".PadRight(Console.WindowWidth + 2), fullScore + levelScore);
+                    Console.SetCursorPosition(0, 2);
+                    Console.Write("Enter username:");
+                    string user = Console.ReadLine();
+                    Console.WriteLine();
+                    WriteToFile(fullScore, user);
+                    snakeBody.Clear();
+                    MainMenue.StartMenueOptions();
+                    return;
+                }
+                Thread.Sleep(timeSleep);
+
+                bool TooOldFood = DeleteFoodAfterTime(showFood, food, obstacles);
+                if (TooOldFood)
+                {
+                    food = GenerateFood(obstacles);
+                    food.Print(foodSymbol, foodColor);
+                    TooOldFood = false;
+                    showFood = DateTime.Now;
+                }
+
+                if (levelScore == 100)// Тук може да си поиграе човек да измисли кога да
+                //почва следващото ниво(сега е на 2 изядени "храни", колкото за тестване).
+                // Също - да се прави някаква промяна на скоростта в зависимост от нивото. 
+                {
+                    level++;
+                    fullScore += levelScore;
+                    levelScore = 0;
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.SetCursorPosition(0, 1);
+                    Console.WriteLine(new string('-', Console.WindowWidth));
+                    Console.SetCursorPosition(0, 0);
+                    Console.WriteLine("Scores = {0}", fullScore + levelScore);
+                    Console.SetCursorPosition(Console.WindowWidth - 11, 0);
+                    Console.WriteLine("Level = {0}", level);
+                    timeSleep -= 5;
+                    int snakeLength = snakeBody.Count;
+                    snakeBody.Clear();
+                    InitializePrintNewSnake(snakeLength);
+                    command = 0;
+                    obstacleCoordinates = new bool[Console.WindowHeight, Console.WindowWidth];
+                    GenerateObstacles(obstacleCoordinates);
+                    obstacles = GetObstacles(obstacleCoordinates);
+                    PrintObstacles(obstacles);
+                    food = GenerateFood(obstacles);
+                    food.Print(foodSymbol, foodColor);
+                    poison = GenerateFood(obstacles);
+                    poison.Print(poisonFood, poisonColor);
+                    Thread.Sleep(1200);
+                    showFood = DateTime.Now;
+                }
             }
         }
 
