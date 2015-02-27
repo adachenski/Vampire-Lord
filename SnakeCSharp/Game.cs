@@ -417,6 +417,7 @@ namespace SnakeCSharp
                     string user = Console.ReadLine();
                     Console.WriteLine();
                     WriteToFile(fullScore, user);
+                    gameOverSound.Stop();
                     snakeBody.Clear();
                     MainMenue.StartMenueOptions();
                     return;
