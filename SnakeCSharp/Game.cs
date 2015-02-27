@@ -327,7 +327,6 @@ namespace SnakeCSharp
             string[] highScores = ReadFromFile();
             string template = "{0:00000000} {1,-8} {2:dd.MM.yyyy}";
             string newResult = String.Format(template, highScore, userName, now.Date);
-            Console.WriteLine(newResult);
             if (String.Compare(newResult, highScores[4]) > 0)
             {
                 highScores[4] = newResult;
