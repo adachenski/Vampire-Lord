@@ -197,7 +197,7 @@ namespace SnakeCSharp
             Console.BackgroundColor = ConsoleColor.Black;
             Console.WriteLine("Tsvetan Razsolkov \nGeorgi Malkovski \nEsa Vehmanen "
                 + "\nAtanas Dachenski \nKonstantina Krysteva "
-                + "\nQnko Stoqnov \naa bb");
+                + "\nQnko Stoqnov \nSevdalina Nenkova");
             Console.BackgroundColor = ConsoleColor.Green;
             Console.WriteLine("                       ");
             Console.BackgroundColor = ConsoleColor.Black;

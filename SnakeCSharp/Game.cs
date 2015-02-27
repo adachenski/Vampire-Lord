@@ -1,7 +1,6 @@
 ﻿
 // TODO: Някъде да се сложат две try{}catch{} конструкции. Най-лесно май ще е в метода
-// (несъществуващ все още) за писане в текстов файл на резултат при GameOver(ред 70 и нещо);
-// Със сигурност може да се поправи, бая мазало стана кода, дано е що-годе разбираем.
+// (несъществуващ все още) за писане в текстов файл на резултат при GameOver(ред 110 и нещо);
 
 namespace SnakeCSharp
 {
@@ -62,22 +61,24 @@ namespace SnakeCSharp
                 Console.BackgroundColor = ConsoleColor.Black;
                 return;
             }
-            // Някакво старт меню може да се направи преди да се нарисува полето, ако на някой му
-            // се занимава - пак си е допълнителен метод :) Примерно - Press 1 to start game. 
-            // Press 2 to see high scores. Press 3 to exit. Нещо такова.
+
             InitiateGameField();
 
             int timeSleep = 100;
             int command = (int)Commands.right;
+
             bool[,] obstacleCoordinates = new bool[Console.WindowHeight, Console.WindowWidth];
             GenerateObstacles(obstacleCoordinates);
             List<GameObject> obstacles = GetObstacles(obstacleCoordinates);
             PrintObstacles(obstacles);
+
             GameObject food = GenerateFood(obstacles);
             food.Print(foodSymbol, foodColor);
             showFood = DateTime.Now;
+
             GameObject poison = GeneratePoisonFood(obstacles, food);
             poison.Print(poisonFood, poisonColor);
+
             while (true)
             {
 
@@ -92,7 +93,9 @@ namespace SnakeCSharp
                     Console.SetCursorPosition(0, 0);
                     Console.WriteLine(new string(' ', Console.WindowWidth));
                     Console.SetCursorPosition(0, 0);
-                    Console.WriteLine("Scores = {0}", fullScore + levelScore);
+                    Console.Write("Scores = {0}", fullScore + levelScore);
+                    Console.SetCursorPosition(Console.WindowWidth - 11, 0);
+                    Console.WriteLine("Level = {0}", level);
                     FeedSnake(command);
                     poison = GenerateFood(obstacles);
                     poison.Print(poisonFood, poisonColor);
@@ -105,7 +108,9 @@ namespace SnakeCSharp
                     Console.SetCursorPosition(0, 0);
                     Console.WriteLine(new string(' ', Console.WindowWidth));
                     Console.SetCursorPosition(0, 0);
-                    Console.WriteLine("Scores = {0}", fullScore + levelScore);
+                    Console.Write("Scores = {0}", fullScore + levelScore);
+                    Console.SetCursorPosition(Console.WindowWidth - 11, 0);
+                    Console.WriteLine("Level = {0}", level);
                     FeedSnake(command);
                     food = GenerateFood(obstacles);
                     food.Print(foodSymbol, foodColor);
@@ -127,10 +132,7 @@ namespace SnakeCSharp
                     Console.WriteLine();
 
                     // Writing of result(asking user for name) in text file result.txt.
-                    // streamWriter.WriteLine() so it keeps previous results.)
-                    // Нещо с DateTime, примерно колко време е играно, или пък с резултата да се 
-                    // принтира и датата, колкото да има употреба на класа в проекта, другите 
-                    // 2 .NET класа са ни Random и Thread.
+                    
                     return;
                 }
                 Thread.Sleep(timeSleep);
@@ -144,9 +146,7 @@ namespace SnakeCSharp
                     showFood = DateTime.Now;
                 }
 
-                if (levelScore == 100)// Тук може да си поиграе човек да измисли кога да
-                //почва следващото ниво(сега е на 2 изядени "храни", колкото за тестване).
-                // Също - да се прави някаква промяна на скоростта в зависимост от нивото. 
+                if (levelScore == 100)
                 {
                     level++;
                     fullScore += levelScore;
@@ -156,7 +156,9 @@ namespace SnakeCSharp
                     Console.SetCursorPosition(0, 1);
                     Console.WriteLine(new string('-', Console.WindowWidth));
                     Console.SetCursorPosition(0, 0);
-                    Console.WriteLine("Scores = {0}", fullScore + levelScore);
+                    Console.Write("Scores = {0}", fullScore + levelScore);
+                    Console.SetCursorPosition(Console.WindowWidth - 11, 0);
+                    Console.WriteLine("Level = {0}", level);
                     timeSleep -= 5;
                     int snakeLength = snakeBody.Count;
                     snakeBody.Clear();
@@ -300,7 +302,7 @@ namespace SnakeCSharp
             {
                 int row = randomNumberGenerator.Next(2, Console.WindowHeight);
                 // Check starting row of snake, so there is no way obstacle lands on the snake body upon starting the game;
-                if (row == 14)
+                if (row == Console.WindowHeight/2)
                 {
                     row++;
                 }
@@ -385,21 +387,23 @@ namespace SnakeCSharp
         public static void InitiateGameField()
         {
             // Set game field size, color and initial size and position of the snake:
-            Console.SetWindowSize(50, 30);
+            Console.SetWindowSize(60, 25);
             Console.BufferHeight = Console.WindowHeight + 1;
             Console.BufferWidth = Console.WindowWidth + 1;
             Console.ForegroundColor = ConsoleColor.White;
             Console.SetCursorPosition(0, 1);
             Console.WriteLine(new string('-', Console.WindowWidth));
             Console.SetCursorPosition(0, 0);
-            Console.WriteLine("Scores = {0}", fullScore + levelScore);
+            Console.Write("Scores = {0}", fullScore + levelScore);
+            Console.SetCursorPosition(Console.WindowWidth - 11, 0);
+            Console.WriteLine("Level = {0}", level);
             Console.CursorVisible = false;
             Console.OutputEncoding = Encoding.Unicode;
             Console.Title = "Vampire Lord - Snake";
 
             for (int i = 0; i < 6; i++)
             {
-                snakeBody.Enqueue(new GameObject(i, 14));
+                snakeBody.Enqueue(new GameObject(i, Console.WindowHeight/2));
             }
             foreach (var element in snakeBody)
             {
@@ -411,7 +415,7 @@ namespace SnakeCSharp
         {
             for (int i = 0; i < snakeLength; i++)
             {
-                snakeBody.Enqueue(new GameObject(i, 14));
+                snakeBody.Enqueue(new GameObject(i, Console.WindowHeight / 2));
             }
             foreach (var element in snakeBody)
             {
