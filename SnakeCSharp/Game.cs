@@ -22,6 +22,7 @@ namespace SnakeCSharp
         const ConsoleColor obstacleColor = ConsoleColor.Yellow;
         const ConsoleColor foodColor = ConsoleColor.Green;
         const ConsoleColor poisonColor = ConsoleColor.Red;
+        static SoundPlayer bgrMusic = new SoundPlayer("..\\..\\backgroundMusic.wav");
 
         static GameObject[] directions = new GameObject[]
             {
@@ -48,11 +49,11 @@ namespace SnakeCSharp
 
         static DateTime showFood = DateTime.Now;
         public static bool exit = false;
+
         static void Main()
         {
-
-
-            new SoundPlayer("..\\..\\backgroundMusic.wav").PlayLooping();
+            
+            bgrMusic.Play();
             MainMenue.LoadingGame();
             MainMenue.SplashScreen();
             Console.Clear();
@@ -62,6 +63,7 @@ namespace SnakeCSharp
                 Console.BackgroundColor = ConsoleColor.Black;
                 return;
             }
+            
         }
         public static void Exit()
         {
@@ -344,6 +346,7 @@ namespace SnakeCSharp
 
         public static void GamePlay()
         {
+            bgrMusic.Stop();
             InitiateGameField();
             fullScore = 0;
             levelScore = 0;
@@ -420,6 +423,7 @@ namespace SnakeCSharp
                     gameOverSound.Stop();
                     snakeBody.Clear();
                     MainMenue.StartMenueOptions();
+                    bgrMusic.PlayLooping();
                     return;
                 }
                 Thread.Sleep(timeSleep);

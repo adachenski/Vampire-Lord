@@ -7,12 +7,13 @@ namespace SnakeCSharp
     using System.Text;
     using System.Threading.Tasks;
     using System.Threading;
+    using System.Media;
 
     public class MainMenue
     {
-
         public static void LoadingGame()
         {
+
             Console.CursorVisible = false;
             int start = 15, tempStart = start;
             int end = Console.WindowWidth - (start * 2) + 1;
@@ -99,6 +100,8 @@ namespace SnakeCSharp
 
         public static void StartMenueOptions()
         {
+            SoundPlayer bgrMusic = new SoundPlayer("..\\..\\backgroundMusic.wav");
+            bgrMusic.PlayLooping();
             bool quitRequested = false;
             while (!quitRequested)
             {
