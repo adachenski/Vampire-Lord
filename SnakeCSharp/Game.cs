@@ -103,7 +103,8 @@ namespace SnakeCSharp
                 }
                 if (currentSnakeHead.Equals(food))
                 {
-
+                    SoundPlayer eatingSound = new System.Media.SoundPlayer(@"..\\..\\bitingSound.wav");
+                    eatingSound.Play();
                     levelScore += 50;
                     Console.SetCursorPosition(0, 0);
                     Console.WriteLine(new string(' ', Console.WindowWidth));
@@ -120,7 +121,8 @@ namespace SnakeCSharp
                 bool gameOver = MoveSnake(command, obstacles) || fullScore + levelScore < 0;
                 if (gameOver)
                 {
-
+                    SoundPlayer gameOverSound = new System.Media.SoundPlayer(@"..\\..\\gameOverSound.wav");
+                    gameOverSound.Play();
                     Console.SetCursorPosition(0, 0);
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("Game over".PadRight(Console.WindowWidth));
