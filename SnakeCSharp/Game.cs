@@ -11,7 +11,7 @@ namespace SnakeCSharp
     using System.Threading;
     using System.Threading.Tasks;
     using System.IO;
-
+    using System.Media;
     class Game
     {
         const char snakeSymbol = '*';
@@ -52,7 +52,7 @@ namespace SnakeCSharp
         {
 
 
-
+            new SoundPlayer("..\\..\\backgroundMusic.wav").PlayLooping();
             MainMenue.LoadingGame();
             MainMenue.SplashScreen();
             Console.Clear();
