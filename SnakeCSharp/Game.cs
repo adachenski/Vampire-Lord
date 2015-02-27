@@ -406,7 +406,7 @@ namespace SnakeCSharp
                 if (gameOver)
                 {
                     SoundPlayer gameOverSound = new System.Media.SoundPlayer(@"..\\..\\gameOverSound.wav");
-                    gameOverSound.Play();
+                    gameOverSound.Play(); 
                     Console.SetCursorPosition(0, 0);
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("Game over".PadRight(Console.WindowWidth));
@@ -437,6 +437,8 @@ namespace SnakeCSharp
                 //почва следващото ниво(сега е на 2 изядени "храни", колкото за тестване).
                 // Също - да се прави някаква промяна на скоростта в зависимост от нивото. 
                 {
+                    SoundPlayer changeLevelSound = new SoundPlayer(@"..\\..\\nextLevelSound.wav");
+                    changeLevelSound.Play();
                     level++;
                     fullScore += levelScore;
                     levelScore = 0;
