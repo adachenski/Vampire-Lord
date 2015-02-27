@@ -142,6 +142,7 @@ namespace SnakeCSharp
                                     reloadTheWholeMenu = true;
                                     break;
                                 case 3:
+                                    Game.Exit();
                                     quitRequested = true;
 
                                     return;
@@ -190,20 +191,19 @@ namespace SnakeCSharp
         }
         static void Developers()
         {
+            Console.Clear();
             Console.BackgroundColor = ConsoleColor.Green;
             Console.WriteLine("                       ");
             Console.BackgroundColor = ConsoleColor.Black;
             Console.WriteLine("Tsvetan Razsolkov \nGeorgi Malkovski \nEsa Vehmanen "
-                + "\nAtanas Dachenski \nKonstantina Krysteva \nIvaylo Parvanov "
+                + "\nAtanas Dachenski \nKonstantina Krysteva "
                 + "\nQnko Stoqnov \naa bb");
             Console.BackgroundColor = ConsoleColor.Green;
             Console.WriteLine("                       ");
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ReadKey();
-            //SplashScreen();
+           // SplashScreen();
         }
-
-
     }
 }
 

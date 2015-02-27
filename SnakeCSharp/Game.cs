@@ -48,14 +48,20 @@ namespace SnakeCSharp
         static int levelScore = 0;
 
         static DateTime showFood = DateTime.Now;
-
+        public static bool exit = false;
         static void Main()
         {
-            
+
+
 
             MainMenue.LoadingGame();
             MainMenue.SplashScreen();
             Console.Clear();
+            if (exit == true)
+            {
+                Console.BackgroundColor = ConsoleColor.Black;
+                return;
+            }
             // Някакво старт меню може да се направи преди да се нарисува полето, ако на някой му
             // се занимава - пак си е допълнителен метод :) Примерно - Press 1 to start game. 
             // Press 2 to see high scores. Press 3 to exit. Нещо такова.
@@ -169,7 +175,24 @@ namespace SnakeCSharp
                 }
             }
         }
-
+        public static void Exit()
+        {
+            string input = "GOOD BYE!!!";
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.Clear();
+            Console.SetCursorPosition((Console.WindowWidth / 2) - input.Length, (Console.WindowHeight / 2) - 1);
+            Console.BackgroundColor = ConsoleColor.Green;
+            Console.WriteLine("           ");
+            Console.SetCursorPosition((Console.WindowWidth / 2) - input.Length, (Console.WindowHeight / 2) - 2);
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(input);
+            Console.SetCursorPosition((Console.WindowWidth / 2) - input.Length, (Console.WindowHeight / 2) - 3);
+            Console.BackgroundColor = ConsoleColor.Green;
+            Console.WriteLine("           ");
+            Console.ReadLine();
+            exit = true;
+        }
         private static bool DeleteFoodAfterTime(DateTime showFood, GameObject food, List<GameObject> obstacles)
         {
             DateTime hideFood = DateTime.Now;
@@ -395,5 +418,6 @@ namespace SnakeCSharp
                 element.Print(snakeSymbol, snakeColor);
             }
         }
+
     }
 }
