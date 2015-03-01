@@ -39,9 +39,6 @@ namespace SnakeCSharp
                 }
                 ++tempStart;
             }
-            //SplashScreen();
-
-
         }
         public static void SplashScreen()
         {
@@ -149,6 +146,7 @@ namespace SnakeCSharp
                                 case 2:
                                     using (var reader = new StreamReader(@"..\..\DevelopersLogo.txt"))
                                     {
+                                        Console.SetWindowSize(77, 25);
                                         string text = reader.ReadToEnd().ToString();
                                         Console.Clear();
                                         Console.WriteLine(text);
