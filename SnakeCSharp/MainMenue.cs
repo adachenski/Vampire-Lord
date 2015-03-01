@@ -94,8 +94,6 @@ namespace SnakeCSharp
 
             Console.Write("Telerik Corporation\n\n");
             Console.ReadKey();
-            // Console.BackgroundColor = ConsoleColor.Black;
-            // Console.Clear();
             StartMenueOptions();
         }
 
@@ -141,7 +139,7 @@ namespace SnakeCSharp
                                 case 1:
                                     using (var reader = new StreamReader(@"..\..\result.txt"))
                                     {
-                                        string text = reader.ReadToEnd().ToString();                                    
+                                        string text = reader.ReadToEnd().ToString();
                                         Console.Clear();
                                         Console.WriteLine(text);
                                         Console.ReadLine();
@@ -149,7 +147,13 @@ namespace SnakeCSharp
                                     reloadTheWholeMenu = true;
                                     break;
                                 case 2:
-                                    Developers();
+                                    using (var reader = new StreamReader(@"..\..\DevelopersLogo.txt"))
+                                    {
+                                        string text = reader.ReadToEnd().ToString();
+                                        Console.Clear();
+                                        Console.WriteLine(text);
+                                        Console.ReadLine();
+                                    }
                                     reloadTheWholeMenu = true;
                                     break;
                                 case 3:
@@ -199,21 +203,6 @@ namespace SnakeCSharp
                 }
                 Console.WriteLine("{0,6}{1}", "", options[option]);
             }
-        }
-        static void Developers()
-        {
-            Console.Clear();
-            Console.BackgroundColor = ConsoleColor.Green;
-            Console.WriteLine("                       ");
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.WriteLine("Tsvetan Razsolkov \nGeorgi Malkovski \nEsa Vehmanen "
-                + "\nAtanas Dachenski \nKonstantina Krysteva "
-                + "\nQnko Stoqnov \nSevdalina Nenkova");
-            Console.BackgroundColor = ConsoleColor.Green;
-            Console.WriteLine("                       ");
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.ReadKey();
-            // SplashScreen();
         }
     }
 }
