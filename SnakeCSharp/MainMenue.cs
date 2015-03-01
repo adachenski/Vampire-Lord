@@ -8,6 +8,7 @@ namespace SnakeCSharp
     using System.Threading.Tasks;
     using System.Threading;
     using System.Media;
+    using System.IO;
 
     public class MainMenue
     {
@@ -138,7 +139,13 @@ namespace SnakeCSharp
                                     Game.GamePlay();
                                     return;
                                 case 1:
-                                    // TODO: Nneed to implement TopScoreSifo:
+                                    using (var reader = new StreamReader(@"..\..\result.txt"))
+                                    {
+                                        string text = reader.ReadToEnd().ToString();                                    
+                                        Console.Clear();
+                                        Console.WriteLine(text);
+                                        Console.ReadLine();
+                                    }
                                     reloadTheWholeMenu = true;
                                     break;
                                 case 2:
