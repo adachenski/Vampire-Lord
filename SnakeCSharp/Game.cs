@@ -52,7 +52,7 @@ namespace SnakeCSharp
 
         static void Main()
         {
-            
+
             bgrMusic.Play();
             MainMenue.LoadingGame();
             MainMenue.SplashScreen();
@@ -63,7 +63,7 @@ namespace SnakeCSharp
                 Console.BackgroundColor = ConsoleColor.Black;
                 return;
             }
-            
+
         }
         public static void Exit()
         {
@@ -311,52 +311,50 @@ namespace SnakeCSharp
 
         static string[] ReadFromFile()
         {
-            string[] highScores = {
-                                      "00012350 John Doe 27.01.2015",
-                                      "00002250 John Doe 27.01.2015",
-                                      "00000550 John Doe 27.01.2015",
-                                      "00000350 John Doe 27.01.2015",
-                                      "00000300 John Doe 27.01.2015",
-                                  };
-								  
-			//string fileName = @"..\..\highscores.txt";
-            //StreamReader reader = new StreamReader(fileName);
-            //SortedDictionary<string, string> scores = new SortedDictionary<stringstring>();
-            //string splittedLine = "";
+            string fileName = @"..\..\highscores.txt";
+            StreamReader reader = new StreamReader(fileName);
+            SortedDictionary<int, string> highScores = new SortedDictionary<int, string>();
+            string splittedLine = "";
 
-            //using (reader)
-            //{
-            //    int lineNumber = 0;
-            //    string line = reader.ReadLine();
-            //    while (line != null)
-            //    {
-            //        splittedLine = line.Split(new char[] { ' ' }, 2);
-            //        scores.Add(Int16.Parse(splittedLine[0]), splittedLine[1]);
-            //        lineNumber++;
-            //        line = reader.ReadLine();
-            //    }
-            //}
-            //return scores;
-			
-			return highScores;
+            using (reader)
+            {
+                int lineNumber = 0;
+                string line = reader.ReadLine();
+
+                while (line != null)
+                {
+                    splittedLine = line.Split(new char[] { ' ' }, 2);
+                    highScores.Add(Int16.Parse(splittedLine[0]), splittedLine[1]);
+                    lineNumber++;
+                    line = reader.ReadLine();
+                }
+            }
+            return highScores;
         }
 
         static void WriteToFile(int highScore, string userName)
         {
             DateTime now = DateTime.Now;
-            string[] highScores = ReadFromFile();
-            string template = "{0:00000000} {1,-8} {2:dd.MM.yyyy}";
-            string newResult = String.Format(template, highScore, userName, now.Date);
-            if (String.Compare(newResult, highScores[4]) > 0)
-            {
-                highScores[4] = newResult;
-            }
+            SortedDictionary<int, string> highScores = ReadFromFile();
+            //string template = "{0:00000000} {1,-8} {2:dd.MM.yyyy}";
+            //string newResult = String.Format(template, highScore, userName, now.Date);
+
+            string template = "{0,-8} {1:dd.MM.yyyy}";
+            string newResult = String.Format(template, userName, now.Date);
+
+            //if (String.Compare(newResult, highScores[4]) > 0)
+            //{
+            //    highScores[4] = newResult;
+            //}
+
+            highScores.Add(highScore, newResult);
+
             using (StreamWriter writer = new StreamWriter("../../highscores.txt"))
             {
                 foreach (string score in highScores)
                 {
                     writer.WriteLine(score);
-
+                    Console.WriteLine(score);
                 }
             }
         }
@@ -427,7 +425,7 @@ namespace SnakeCSharp
                 if (gameOver)
                 {
                     SoundPlayer gameOverSound = new System.Media.SoundPlayer(@"..\\..\\gameOverSound.wav");
-                    gameOverSound.Play(); 
+                    gameOverSound.Play();
                     Console.SetCursorPosition(0, 0);
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("Game over".PadRight(Console.WindowWidth));
