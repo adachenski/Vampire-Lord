@@ -318,7 +318,27 @@ namespace SnakeCSharp
                                       "00000350 John Doe 27.01.2015",
                                       "00000300 John Doe 27.01.2015",
                                   };
-            return highScores;
+								  
+			//string fileName = @"..\..\highscores.txt";
+            //StreamReader reader = new StreamReader(fileName);
+            //SortedDictionary<string, string> scores = new SortedDictionary<stringstring>();
+            //string splittedLine = "";
+
+            //using (reader)
+            //{
+            //    int lineNumber = 0;
+            //    string line = reader.ReadLine();
+            //    while (line != null)
+            //    {
+            //        splittedLine = line.Split(new char[] { ' ' }, 2);
+            //        scores.Add(Int16.Parse(splittedLine[0]), splittedLine[1]);
+            //        lineNumber++;
+            //        line = reader.ReadLine();
+            //    }
+            //}
+            //return scores;
+			
+			return highScores;
         }
 
         static void WriteToFile(int highScore, string userName)
