@@ -346,12 +346,18 @@ namespace SnakeCSharp
             //{
             //    highScores[4] = newResult;
             //}
-			
-			if((highScores.Count > 5) && (highScore > highScores.Last().Key))
-            {
-                highScores.Remove(highScores.Last().Key);
+			try
+            {              
+                if ((highScores.Count > 4) & (highScore > highScores.Last().Key))
+                {
+                    highScores.Remove(highScores.Last().Key);
+                }
             }
-			
+            catch(InvalidOperationException)
+            {
+                //Console.WriteLine("The file is empty.");
+            }
+						
             highScores.Add(highScore, newResult);
 
             using (StreamWriter writer = new StreamWriter("../../highscores.txt"))
