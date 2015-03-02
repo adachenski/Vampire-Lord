@@ -347,11 +347,11 @@ namespace SnakeCSharp
             //    highScores[4] = newResult;
             //}
 			
-			if (highScore > highScores.Last().Key)
+			if((highScores.Count > 5) && (highScore > highScores.Last().Key))
             {
                 highScores.Remove(highScores.Last().Key);
             }
-
+			
             highScores.Add(highScore, newResult);
 
             using (StreamWriter writer = new StreamWriter("../../highscores.txt"))
