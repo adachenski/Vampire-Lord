@@ -18,6 +18,8 @@ namespace SnakeCSharp
             Console.CursorVisible = false;
             int start = 15, tempStart = start;
             int end = Console.WindowWidth - (start * 2) + 1;
+            Console.SetWindowSize(77, 25);
+            Console.SetBufferSize(77, 25);
             Console.SetCursorPosition(start * 2, 19);
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("LOADING :    %");
@@ -136,6 +138,8 @@ namespace SnakeCSharp
                                 case 1:
                                     using (var reader = new StreamReader(@"..\..\result.txt"))
                                     {
+                                        Console.SetWindowSize(77, 25);
+                                        Console.SetBufferSize(77, 25);
                                         string text = reader.ReadToEnd().ToString();
                                         Console.Clear();
                                         Console.WriteLine(text);
@@ -144,9 +148,10 @@ namespace SnakeCSharp
                                     reloadTheWholeMenu = true;
                                     break;
                                 case 2:
-                                    using (var reader = new StreamReader(@"..\..\DevelopersLogo.txt"))
+                                    using (var reader = new StreamReader(@"..\..\Logos\DevelopersLogo.txt"))
                                     {
                                         Console.SetWindowSize(77, 25);
+                                        Console.SetBufferSize(77, 25);
                                         string text = reader.ReadToEnd().ToString();
                                         Console.Clear();
                                         Console.WriteLine(text);

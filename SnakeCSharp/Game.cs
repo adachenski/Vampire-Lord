@@ -67,20 +67,18 @@ namespace SnakeCSharp
         }
         public static void Exit()
         {
-            string input = "GOOD BYE!!!";
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.Clear();
-            Console.SetCursorPosition((Console.WindowWidth / 2) - input.Length, (Console.WindowHeight / 2) - 1);
-            Console.BackgroundColor = ConsoleColor.Green;
-            Console.WriteLine("           ");
-            Console.SetCursorPosition((Console.WindowWidth / 2) - input.Length, (Console.WindowHeight / 2) - 2);
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(input);
-            Console.SetCursorPosition((Console.WindowWidth / 2) - input.Length, (Console.WindowHeight / 2) - 3);
-            Console.BackgroundColor = ConsoleColor.Green;
-            Console.WriteLine("           ");
-            Console.ReadLine();
+            using (var reader = new StreamReader(@"..\..\Logos\GameOver.txt"))
+            {
+                Console.SetWindowSize(77, 25);
+                Console.SetBufferSize(77, 25);
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.SetWindowSize(77, 25);
+                string text = reader.ReadToEnd().ToString();
+                Console.Clear();
+                Console.WriteLine(text);
+                Console.ReadLine();
+            }
             exit = true;
         }
         private static bool DeleteFoodAfterTime(DateTime showFood, GameObject food, List<GameObject> obstacles)

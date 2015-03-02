@@ -50,7 +50,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DevelopersLogo.txt" />
+    <Content Include="Logos\DevelopersLogo.txt" />
+    <Content Include="Logos\GameOver.txt" />
     <Content Include="result.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
