@@ -12,6 +12,7 @@ namespace SnakeCSharp
     using System.Threading.Tasks;
     using System.IO;
     using System.Media;
+
     class Game
     {
         const char snakeSymbol = '*';
@@ -22,6 +23,8 @@ namespace SnakeCSharp
         const ConsoleColor obstacleColor = ConsoleColor.Yellow;
         const ConsoleColor foodColor = ConsoleColor.Green;
         const ConsoleColor poisonColor = ConsoleColor.Red;
+        public const string fileName = @"..\..\highscores.txt";
+
         static SoundPlayer bgrMusic = new SoundPlayer("..\\..\\backgroundMusic.wav");
 
         static GameObject[] directions = new GameObject[]
@@ -54,7 +57,7 @@ namespace SnakeCSharp
         {
 
             bgrMusic.Play();
-            MainMenue.LoadingGame();
+            //MainMenue.LoadingGame();
             MainMenue.SplashScreen();
             Console.Clear();
             Exit();
@@ -309,25 +312,38 @@ namespace SnakeCSharp
             }
         }
 
-        static string[] ReadFromFile()
+        public static Dictionary<string, int> ReadFromFile(string fileName)
         {
-            string fileName = @"..\..\highscores.txt";
+            
             StreamReader reader = new StreamReader(fileName);
-            SortedDictionary<int, string> highScores = new SortedDictionary<int, string>();
-            string splittedLine = "";
+            var highScores = new Dictionary<string, int>();
+            string[] splittedLine;
 
             using (reader)
             {
-                int lineNumber = 0;
-                string line = reader.ReadLine();
-
-                while (line != null)
+                //int lineNumber = 0;
+                string line = reader.ReadToEnd();
+                if (line == string.Empty)
                 {
-                    splittedLine = line.Split(new char[] { ' ' }, 2);
-                    highScores.Add(Int16.Parse(splittedLine[0]), splittedLine[1]);
-                    lineNumber++;
-                    line = reader.ReadLine();
+                    return highScores;
                 }
+                //while (line != null)
+                //{
+                else
+                {
+                    string[] lines = line.Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var item in lines)
+                    {
+                        splittedLine = item.Split(new char[] { ' ', '-' }, StringSplitOptions.RemoveEmptyEntries);
+                        highScores.Add(splittedLine[1], int.Parse(splittedLine[0]));
+                    }
+                }
+                
+                    
+                    
+                    //lineNumber++;
+                    //line = reader.ReadLine();
+                //}
             }
             return highScores;
         }
@@ -335,37 +351,38 @@ namespace SnakeCSharp
         static void WriteToFile(int highScore, string userName)
         {
             DateTime now = DateTime.Now;
-            SortedDictionary<int, string> highScores = ReadFromFile();
+            var highScores = ReadFromFile(fileName);
             //string template = "{0:00000000} {1,-8} {2:dd.MM.yyyy}";
             //string newResult = String.Format(template, highScore, userName, now.Date);
 
-            string template = "{0,-8} {1:dd.MM.yyyy}";
+            string template = "{0}/{1:dd.MM.yyyy}";
             string newResult = String.Format(template, userName, now.Date);
 
             //if (String.Compare(newResult, highScores[4]) > 0)
             //{
             //    highScores[4] = newResult;
             //}
+            var sortedScores = highScores.OrderByDescending(x => x.Value);
 			try
             {              
-                if ((highScores.Count > 4) & (highScore > highScores.Last().Key))
+                if (sortedScores.Count() > 4)
                 {
-                    highScores.Remove(highScores.Last().Key);
+                    highScores.Remove(sortedScores.Last().Key);
                 }
             }
             catch(InvalidOperationException)
             {
                 //Console.WriteLine("The file is empty.");
             }
-						
-            highScores.Add(highScore, newResult);
 
-            using (StreamWriter writer = new StreamWriter("../../highscores.txt"))
+            highScores.Add(newResult, highScore);
+            sortedScores = highScores.OrderByDescending(x => x.Value);
+
+            using (StreamWriter writer = new StreamWriter(fileName))
             {
-                foreach (string score in highScores)
+                foreach (var score in sortedScores)
                 {
-                    writer.WriteLine(score);
-                    Console.WriteLine(score);
+                    writer.WriteLine(score.Value + " - " + score.Key);
                 }
             }
         }
@@ -435,18 +452,28 @@ namespace SnakeCSharp
                 bool gameOver = MoveSnake(command, obstacles) || fullScore + levelScore < 0;
                 if (gameOver)
                 {
+                    if (fullScore + levelScore < 0)
+                    {
+                        fullScore = 0;
+                    }
+                    else
+                    {
+                        fullScore += levelScore;
+                    }
                     SoundPlayer gameOverSound = new System.Media.SoundPlayer(@"..\\..\\gameOverSound.wav");
                     gameOverSound.Play();
                     Console.SetCursorPosition(0, 0);
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("Game over".PadRight(Console.WindowWidth));
                     Console.SetCursorPosition(0, 1);
-                    Console.WriteLine("Scores: {0}".PadRight(Console.WindowWidth + 2), fullScore + levelScore);
+                    Console.WriteLine("Scores: {0}".PadRight(Console.WindowWidth + 2), fullScore);
                     Console.SetCursorPosition(0, 2);
                     Console.Write("Enter username:");
                     string user = Console.ReadLine();
                     Console.WriteLine();
                     WriteToFile(fullScore, user);
+                    Console.Clear();
+                    MainMenue.WriteTopScores();
                     gameOverSound.Stop();
                     snakeBody.Clear();
                     MainMenue.StartMenueOptions();
