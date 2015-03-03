@@ -52,7 +52,6 @@
   <ItemGroup>
     <Content Include="Logos\DevelopersLogo.txt" />
     <Content Include="Logos\GameOver.txt" />
-    <Content Include="result.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

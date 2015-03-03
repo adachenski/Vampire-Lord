@@ -14,7 +14,6 @@ namespace SnakeCSharp
     {
         public static void LoadingGame()
         {
-
             Console.CursorVisible = false;
             int start = 15, tempStart = start;
             int end = Console.WindowWidth - (start * 2) + 1;
@@ -42,6 +41,7 @@ namespace SnakeCSharp
                 ++tempStart;
             }
         }
+
         public static void SplashScreen()
         {
             Console.BackgroundColor = ConsoleColor.Black;
@@ -93,7 +93,14 @@ namespace SnakeCSharp
 
             Console.Write("Telerik Corporation\n\n");
             Console.ReadKey();
-            StartMenueOptions();
+            try
+            {
+                StartMenueOptions();
+            }
+            catch (FileNotFoundException exception)
+            {
+                Console.WriteLine(exception.Message);
+            }            
         }
 
         public static void StartMenueOptions()
@@ -183,21 +190,41 @@ namespace SnakeCSharp
 
         public static void WriteTopScores()
         {
-            var scores = Game.ReadFromFile(Game.fileName);
-            var sortedScores = scores.OrderByDescending(x => x.Value);
-            Console.SetCursorPosition(25, 0);
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("Top Scores:");
-            Console.WriteLine();
-            int lineNumber = 2;
-            foreach (var score in sortedScores)
+            try
             {
-                Console.SetCursorPosition(20, lineNumber);
-                Console.WriteLine(score.Value + " - " + score.Key);
-                lineNumber++;
+                var scores = Game.ReadFromFile(Game.fileName);
+                var sortedScores = scores.OrderByDescending(x => x.Value);
+
+                Console.SetCursorPosition(25, 0);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("Top Scores:");
+                Console.WriteLine();
+                int lineNumber = 2;
+                foreach (var score in sortedScores)
+                {
+                    Console.SetCursorPosition(20, lineNumber);
+                    Console.WriteLine(score.Value + " - " + score.Key);
+                    lineNumber++;
+                }
+                Console.ReadKey();
             }
-            Console.ReadKey();
+            catch (FileNotFoundException fne)
+            {
+                Console.WriteLine(fne.Message);
+                Console.ReadKey();
+            }
+            catch (InvalidOperationException ioe)
+            {
+                Console.WriteLine(ioe.Message);
+                Console.ReadKey();
+            }
+            catch (System.IO.IOException ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.ReadKey();
+            }
         }
+
         static void PrintMenuOptions(string[] options, int selectedOption, int top)
         {
             Console.CursorVisible = false;

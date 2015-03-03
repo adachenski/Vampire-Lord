@@ -1,3 +1,0 @@
-﻿1.Nasko   200
-2.Tsvetan 150
-3.Georgi  -50
