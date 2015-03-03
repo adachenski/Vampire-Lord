@@ -14,6 +14,7 @@ namespace SnakeCSharp
     {
         public static void LoadingGame()
         {
+            Console.Title = "Vampire Lord - Snake";
             Console.CursorVisible = false;
             int start = 15, tempStart = start;
             int end = Console.WindowWidth - (start * 2) + 1;
@@ -150,6 +151,7 @@ namespace SnakeCSharp
                                 case 2:
                                     using (var reader = new StreamReader(@"..\..\Logos\DevelopersLogo.txt"))
                                     {
+                                        Console.Title = "Vampire Lord - Snake";
                                         Console.SetWindowSize(77, 25);
                                         Console.SetBufferSize(77, 25);
                                         string text = reader.ReadToEnd().ToString();

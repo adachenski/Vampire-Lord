@@ -70,6 +70,7 @@ namespace SnakeCSharp
         {
             using (var reader = new StreamReader(@"..\..\Logos\GameOver.txt"))
             {
+                Console.Title = "Vampire Lord - Snake";
                 Console.SetWindowSize(77, 25);
                 Console.SetBufferSize(77, 25);
                 Console.BackgroundColor = ConsoleColor.Black;
