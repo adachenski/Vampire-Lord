@@ -22,7 +22,7 @@ namespace SnakeCSharp
         const ConsoleColor poisonColor = ConsoleColor.Red;
         public const string fileName = @"..\..\highscores.txt";
 
-        static SoundPlayer bgrMusic = new SoundPlayer("..\\..\\backgroundMusic.wav");
+        static SoundPlayer bgrMusic = new SoundPlayer("..\\..\\Sounds\\backgroundMusic.wav");
 
         static GameObject[] directions = new GameObject[]
             {
@@ -110,7 +110,7 @@ namespace SnakeCSharp
                 GameObject currentSnakeHead = snakeBody.Last();
                 if (currentSnakeHead.Equals(poison))
                 {
-                    SoundPlayer poisonSound = new System.Media.SoundPlayer(@"..\\..\\poisonSound.wav");
+                    SoundPlayer poisonSound = new System.Media.SoundPlayer(@"..\\..\\Sounds\\poisonSound.wav");
                     poisonSound.Play();
                     levelScore -= 50;
                     Console.SetCursorPosition(0, 0);
@@ -126,7 +126,7 @@ namespace SnakeCSharp
                 }
                 if (currentSnakeHead.Equals(food))
                 {
-                    SoundPlayer eatingSound = new System.Media.SoundPlayer(@"..\\..\\bitingSound.wav");
+                    SoundPlayer eatingSound = new System.Media.SoundPlayer(@"..\\..\\Sounds\\bitingSound.wav");
                     eatingSound.Play();
                     levelScore += 50;
                     Console.SetCursorPosition(0, 0);
@@ -152,7 +152,7 @@ namespace SnakeCSharp
                     {
                         fullScore += levelScore;
                     }
-                    SoundPlayer gameOverSound = new System.Media.SoundPlayer(@"..\\..\\gameOverSound.wav");
+                    SoundPlayer gameOverSound = new System.Media.SoundPlayer(@"..\\..\\Sounds\\gameOverSound.wav");
                     gameOverSound.Play();
                     Console.SetCursorPosition(0, 0);
                     Console.ForegroundColor = ConsoleColor.White;
@@ -186,7 +186,7 @@ namespace SnakeCSharp
 
                 if (levelScore == 100)// Not very challenging for demonstration purposes.
                 {
-                    SoundPlayer changeLevelSound = new SoundPlayer(@"..\\..\\nextLevelSound.wav");
+                    SoundPlayer changeLevelSound = new SoundPlayer(@"..\\..\\Sounds\\nextLevelSound.wav");
                     changeLevelSound.Play();
                     level++;
                     fullScore += levelScore;
@@ -430,7 +430,7 @@ namespace SnakeCSharp
             Console.SetCursorPosition(0, 0);
             Console.Write("Scores = {0}", 0);
             Console.SetCursorPosition(Console.WindowWidth - 11, 0);
-            Console.WriteLine("Level = {0}", level);
+            Console.WriteLine("Level = {0}", 1);
             Console.CursorVisible = false;
             Console.OutputEncoding = Encoding.Unicode;
             Console.Title = "Vampire Lord - Snake";

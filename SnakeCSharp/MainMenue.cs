@@ -105,7 +105,7 @@ namespace SnakeCSharp
 
         public static void StartMenueOptions()
         {
-            SoundPlayer bgrMusic = new SoundPlayer("..\\..\\backgroundMusic.wav");
+            SoundPlayer bgrMusic = new SoundPlayer("..\\..\\Sounds\\backgroundMusic.wav");
             bgrMusic.PlayLooping();
             bool quitRequested = false;
             while (!quitRequested)
