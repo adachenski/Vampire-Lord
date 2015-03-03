@@ -136,15 +136,8 @@ namespace SnakeCSharp
                                     Game.GamePlay();
                                     return;
                                 case 1:
-                                    using (var reader = new StreamReader(@"..\..\result.txt"))
-                                    {
-                                        Console.SetWindowSize(77, 25);
-                                        Console.SetBufferSize(77, 25);
-                                        string text = reader.ReadToEnd().ToString();
-                                        Console.Clear();
-                                        Console.WriteLine(text);
-                                        Console.ReadLine();
-                                    }
+                                    Console.Clear();
+                                    WriteTopScores();
                                     reloadTheWholeMenu = true;
                                     break;
                                 case 2:
@@ -186,6 +179,24 @@ namespace SnakeCSharp
                     }
                 }
             }
+        }
+
+        public static void WriteTopScores()
+        {
+            var scores = Game.ReadFromFile(Game.fileName);
+            var sortedScores = scores.OrderByDescending(x => x.Value);
+            Console.SetCursorPosition(25, 0);
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("Top Scores:");
+            Console.WriteLine();
+            int lineNumber = 2;
+            foreach (var score in sortedScores)
+            {
+                Console.SetCursorPosition(20, lineNumber);
+                Console.WriteLine(score.Value + " - " + score.Key);
+                lineNumber++;
+            }
+            Console.ReadKey();
         }
         static void PrintMenuOptions(string[] options, int selectedOption, int top)
         {
